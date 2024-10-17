@@ -28,6 +28,6 @@ typedef struct _mouvement {
 void init_plateau(int tplateau, Jeu *jeu);
 void show_tab(int tplateau, const Jeu *jeu);
 Case parse(void);
-void shitf(Jeu *jeu, Mouvement choix);
+void shift(Jeu *jeu, Mouvement choix);
 
 #endif

@@ -23,7 +23,7 @@ int main(void) {
             pion.depart = parse();
         } while (((pion.depart.x >= TAILLE || pion.depart.x < 0 ||
                    pion.depart.y >= TAILLE || pion.depart.y < 0) ||
-                  (jeu.plateau[pion.depart.x][pion.depart.y].couleur == tour)));
+                  (jeu.plateau[pion.depart.x][pion.depart.y].couleur != tour)));
 
         do {
             printf(
@@ -33,11 +33,15 @@ int main(void) {
             pion.arrivee = parse();
         } while (((pion.depart.x >= TAILLE || pion.depart.x < 0 ||
                    pion.depart.y >= TAILLE || pion.depart.y < 0) ||
-                  (jeu.plateau[pion.depart.x][pion.depart.y].couleur == tour) ||
+                  (jeu.plateau[pion.depart.x][pion.depart.y].couleur != tour) ||
                   (abs(pion.depart.x - pion.arrivee.x) > 1) ||
                   abs(pion.depart.y - pion.arrivee.y) > 1));
         
-        shift(&jeu, pion.arrivee);
+        shift(&jeu, pion);
+        show_tab(TAILLE, &jeu);
+
+
+        
         if (tour == BLANC)
             tour = NOIR;
         else

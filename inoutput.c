@@ -15,6 +15,6 @@ Case parse(void) {
 
     scanf("%d", &a.x);
     scanf("%d", &a.y);
-    
+
     return a;
 }
