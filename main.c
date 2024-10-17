@@ -37,6 +37,7 @@ int main(void) {
                   (abs(pion.depart.x - pion.arrivee.x) > 1) ||
                   abs(pion.depart.y - pion.arrivee.y) > 1));
         
+        shift(&jeu, pion.arrivee);
         if (tour == BLANC)
             tour = NOIR;
         else

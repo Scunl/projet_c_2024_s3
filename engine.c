@@ -1,7 +1,6 @@
 #include "incognito.h"
 #include <stdlib.h>
 
-
 int nb_pion(int tplateau) {
     if (tplateau <= 8)
         return ((tplateau - 1) * (tplateau - 2) / 2) - 1;
@@ -39,11 +38,14 @@ void init_plateau(int tplateau, Jeu *jeu) {
     }
 }
 
-
+void shift(Jeu *jeu, Mouvement choix) {
+    Couleur tmp;
+    tmp = jeu->plateau[choix.depart.x][choix.depart.y].couleur;
+    jeu->plateau[choix.depart.x][choix.depart.y].couleur =
+        jeu->plateau[choix.arrivee.x][choix.arrivee.y].couleur;
+    jeu->plateau[choix.arrivee.x][choix.arrivee.y].couleur = tmp;
+}
 
 // void deplacement(int tplateau, Jeu *jeu, Mouvement move, Pion pion) {
-    
+
 // }
-
-
-
