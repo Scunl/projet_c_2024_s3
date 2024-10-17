@@ -1,3 +1,6 @@
+#ifndef __INCOGNITO_H__
+#define __INCOGNITO_H__
+
 #define TAILLE 5
 
 typedef enum _couleur {VIDE, BLANC, NOIR} Couleur;
@@ -21,3 +24,9 @@ typedef struct _mouvement {
     Case depart;
     Case arrivee;
 } Mouvement;
+
+void init_plateau(int tplateau, Jeu *jeu);
+void show_tab(int tplateau, const Jeu *jeu);
+Case parse(void);
+
+#endif

@@ -2,55 +2,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int nb_pion(int tplateau) {
-    if (tplateau <= 8)
-        return ((tplateau - 1) * (tplateau - 2) / 2) - 1;
-    return -1;
-}
-
-void init_plateau(int tplateau, Jeu *jeu) {
-    int tmp = 2;
-    int tmp2 = -2;
-
-    for (int i = 0; i < tplateau; i++) {
-        for (int j = 0; j < tplateau; j++) {
-            jeu->plateau[i][j].couleur = 0;
-            jeu->plateau[i][j].type = 0;
-        }
-    }
-
-    for (int i = 0; i < tplateau; i++) {
-        for (int j = 0; j < tplateau; j++) {
-            if (i < tplateau - 2 && j >= tmp) {
-                if (i != 0 || j != tplateau - 1)
-                    jeu->plateau[i][j].couleur = NOIR;
-                else
-                    jeu->plateau[i][j].couleur = 8;
-            }
-            if (i >= 2 && j <= tmp2) {
-                if (i != tplateau - 1 || j != 0)
-                    jeu->plateau[i][j].couleur = BLANC;
-                else
-                    jeu->plateau[i][j].couleur = 9;
-            }
-        }
-        tmp++;
-        tmp2++;
-    }
-}
-
-void affichage(int tplateau, const Jeu *jeu) {
-    for (int i = 0; i < tplateau; i++) {
-        for (int j = 0; j < tplateau; j++) {
-            printf("%d ", jeu->plateau[i][j].couleur);
-        }
-        printf("\n");
-    }
-}
-
 int main(void) {
     Jeu jeu;
+    Mouvement pion;
     init_plateau(TAILLE, &jeu);
-    affichage(TAILLE, &jeu);
+    show_tab(TAILLE, &jeu);
+    Couleur tour = BLANC;
+    int partie = 1;
+
+    while (partie) {
+        do {
+            printf("============================\n");
+            if (tour == BLANC)
+                printf("C'est au tour du joueur Blanc\n");
+            else
+                printf(" > C'est au tour du joueur Noir\n");
+            printf(
+                "  >  Séléctionnez les coordonées du pion que vous souhaitez "
+                "déplacer\n");
+            pion.depart = parse();
+        } while (((pion.depart.x >= TAILLE || pion.depart.x < 0 ||
+                   pion.depart.y >= TAILLE || pion.depart.y < 0) ||
+                  (jeu.plateau[pion.depart.x][pion.depart.y].couleur == tour)));
+
+        do {
+            printf(
+                "  > Séléction du pion en x : %d et y : %d\n"
+                "    >   Vers quelle case voulez-vous effectuer votre coup ?\n",
+                pion.depart.x, pion.depart.y);
+            pion.arrivee = parse();
+        } while (((pion.depart.x >= TAILLE || pion.depart.x < 0 ||
+                   pion.depart.y >= TAILLE || pion.depart.y < 0) ||
+                  (jeu.plateau[pion.depart.x][pion.depart.y].couleur == tour) ||
+                  (abs(pion.depart.x - pion.arrivee.x) > 1) ||
+                  abs(pion.depart.y - pion.arrivee.y) > 1));
+        
+        if (tour == BLANC)
+            tour = NOIR;
+        else
+            tour = BLANC;
+    }
+
     return 0;
 }
