@@ -3,8 +3,8 @@
 
 #define TAILLE 5
 
-typedef enum _couleur {VIDE, BLANC, NOIR} Couleur;
-typedef enum _type{CHEVALIER, ESPION} Type;
+typedef enum _couleur { VIDE, BLANC, NOIR } Couleur;
+typedef enum _type { CHEVALIER, ESPION } Type;
 
 typedef struct _pion {
     Type type;
@@ -29,5 +29,7 @@ void init_plateau(int tplateau, Jeu *jeu);
 void show_tab(int tplateau, const Jeu *jeu);
 Case parse(void);
 void shift(Jeu *jeu, Mouvement choix);
+void examine();
+// void select_spy(int nbpion, Jeu *jeu);
 
 #endif
