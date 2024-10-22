@@ -1,6 +1,7 @@
 #include "incognito.h"
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 
 int nb_pion(int tplateau) {
     if (tplateau <= 8)
@@ -29,8 +30,10 @@ void init_plateau(int tplateau, Jeu *jeu) {
                     jeu->plateau[i][j].type = CHEVALIER;
                     if (spyn < 1) {
                         spyn += rand() % 2;
-                        if (spyn >= 1)
+                        if (spyn >= 1) {
                             jeu->plateau[i][j].type = ESPION;
+                            printf("spyn : %d %d\n", i, j);
+                        }
                     }
                 } else {
                     jeu->plateau[i][j].couleur = 8;
@@ -40,10 +43,12 @@ void init_plateau(int tplateau, Jeu *jeu) {
                 if (i != tplateau - 1 || j != 0) {
                     jeu->plateau[i][j].couleur = BLANC;
                     jeu->plateau[i][j].type = CHEVALIER;
-                    if (spyn < 1) {
-                        spyn += rand() % 2;
-                        if (spyb >= 1)
+                    if (spyb < 1) {
+                        spyb += rand() % 2;
+                        if (spyb >= 1) {
+                            printf("spyb : %d %d\n", i, j);
                             jeu->plateau[i][j].type = ESPION;
+                        }
                     }
                 } else
                     jeu->plateau[i][j].couleur = 9;
@@ -64,11 +69,8 @@ void shift(Jeu *jeu, Mouvement choix) {
     jeu->plateau[choix.arrivee.x][choix.arrivee.y].couleur = tmp;
 }
 
-// Pion select_spy(int nb_pion, Jeu *jeu) {
-//     int nbgen1 = 0, nbgen2 = 0;
-//     srand(time(NULL));
-//     nbgen1 = rand() % nb_pion;
-//     nbgen2 = rand() % nb_pion;
-// }
-
-void examine();
+int examine(Jeu *jeu, Mouvement pion) {
+    if (jeu->plateau[pion.arrivee.x][pion.arrivee.y].type == ESPION)
+        return 1;
+    return 0;
+}

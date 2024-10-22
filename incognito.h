@@ -29,7 +29,8 @@ void init_plateau(int tplateau, Jeu *jeu);
 void show_tab(int tplateau, const Jeu *jeu);
 Case parse(void);
 void shift(Jeu *jeu, Mouvement choix);
-void examine();
+int examine(Jeu *jeu, Mouvement pion);
+void gagnant(Couleur color);
 // void select_spy(int nbpion, Jeu *jeu);
 
 #endif
