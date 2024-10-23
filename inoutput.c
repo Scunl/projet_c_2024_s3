@@ -45,16 +45,15 @@ void show_tab(int tplateau, const Jeu *jeu) {
 
 Case parse(void) {
     Case a;
-    int result;
 
-    result = scanf("%d", &a.x);
-    if (result != 1) {
+    scanf("%d", &a.x);
+    if (a.x < 0 || a.x > TAILLE - 1) {
         a.x = -1;
         return a;
     }
 
-    result = scanf("%d", &a.y);
-    if (result != 1) {
+    scanf("%d", &a.y);
+    if (a.y < 0 || a.y > TAILLE - 1) {
         a.y = -1;
     }
 

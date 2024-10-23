@@ -38,10 +38,10 @@ int main(void) {
                    pion.depart.x, pion.depart.y);
             pion.arrivee = parse();
             if (pion.arrivee.x == -1 || pion.arrivee.y == -1) {
-                while (getchar() != '\n')
-                    ;
-                printf("Coordonnées invalides, veuillez réessayer.\n");
-                continue;
+                while (getchar() != '\n') {
+                    printf("Coordonnées invalides, veuillez réessayer.\n");
+                    continue;
+                }
             }
         } while (((pion.depart.x >= TAILLE || pion.depart.x < 0 ||
                    pion.depart.y >= TAILLE || pion.depart.y < 0) ||
@@ -60,11 +60,13 @@ int main(void) {
             }
         }
         show_tab(TAILLE, &jeu);
-        if ((tour == NOIR) & (pion.arrivee.x == TAILLE - 1) & (pion.arrivee.y == 0)) {
+        if ((tour == NOIR) & (pion.arrivee.x == TAILLE - 1) &
+            (pion.arrivee.y == 0)) {
             gagnant(NOIR);
             partie = 0;
-        } 
-        if ((tour == BLANC) & (pion.arrivee.x == 0) & (pion.arrivee.y == TAILLE - 1)) {
+        }
+        if ((tour == BLANC) & (pion.arrivee.x == 0) &
+            (pion.arrivee.y == TAILLE - 1)) {
             gagnant(BLANC);
             partie = 0;
         }
