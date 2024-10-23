@@ -69,7 +69,6 @@ int main(void) {
             partie = 0;
         }
 
-        
         tour = (tour == NOIR) ? BLANC : NOIR;
     }
     return 0;
