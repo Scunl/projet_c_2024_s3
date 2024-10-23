@@ -13,6 +13,7 @@ void init_plateau(int tplateau, Jeu *jeu) {
     int tmp = 2;
     int tmp2 = -2;
     int spyn = 0, spyb = 0;
+    
     srand(time(NULL));
 
     for (int i = 0; i < tplateau; i++) {

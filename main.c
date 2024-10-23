@@ -49,15 +49,18 @@ int main(void) {
                   (abs(pion.depart.x - pion.arrivee.x) > 1) ||
                   abs(pion.depart.y - pion.arrivee.y) > 1));
 
-        if ((jeu.plateau[pion.arrivee.x][pion.arrivee.y].couleur == 0)) {
+        if ((jeu.plateau[pion.arrivee.x][pion.arrivee.y].couleur == VIDE)) {
             shift(&jeu, pion);
         } else {
             if (examine(&jeu, pion)) {
                 gagnant(tour);
                 partie = 0;
+            } else {
+                jeu.plateau[pion.depart.x][pion.depart.y].couleur = VIDE;
             }
         }
         show_tab(TAILLE, &jeu);
+        
         tour = (tour == NOIR) ? BLANC : NOIR;
     }
     return 0;

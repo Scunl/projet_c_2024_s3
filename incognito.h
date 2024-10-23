@@ -25,6 +25,7 @@ typedef struct _mouvement {
     Case arrivee;
 } Mouvement;
 
+int nb_pion(int tplateau);
 void init_plateau(int tplateau, Jeu *jeu);
 void show_tab(int tplateau, const Jeu *jeu);
 Case parse(void);
