@@ -60,6 +60,15 @@ int main(void) {
             }
         }
         show_tab(TAILLE, &jeu);
+        if ((tour == NOIR) & (pion.arrivee.x == TAILLE - 1) & (pion.arrivee.y == 0)) {
+            gagnant(NOIR);
+            partie = 0;
+        } 
+        if ((tour == BLANC) & (pion.arrivee.x == 0) & (pion.arrivee.y == TAILLE - 1)) {
+            gagnant(BLANC);
+            partie = 0;
+        }
+
         
         tour = (tour == NOIR) ? BLANC : NOIR;
     }
