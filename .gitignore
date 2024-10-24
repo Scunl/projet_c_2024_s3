@@ -1,3 +1,6 @@
 .vscode
 main
 save.inco
+main.o
+inoutput.o
+engine.o
