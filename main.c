@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 int main(void) {
-    Jeu jeu;
+    Jeu game;
     Mouvement pion;
-    init_plateau(TAILLE, &jeu);
-    show_tab(TAILLE, &jeu);
+    init_plateau(TAILLE, &game);
+    show_tab(TAILLE, &game);
     Couleur tour = BLANC;
     int partie = 1;
 
@@ -27,9 +27,10 @@ int main(void) {
                 printf("Coordonnées invalides, veuillez réessayer.\n");
                 continue;
             }
-        } while (((pion.depart.x >= TAILLE || pion.depart.x < 0 ||
-                   pion.depart.y >= TAILLE || pion.depart.y < 0) ||
-                  (jeu.plateau[pion.depart.x][pion.depart.y].couleur != tour)));
+        } while (
+            ((pion.depart.x >= TAILLE || pion.depart.x < 0 ||
+              pion.depart.y >= TAILLE || pion.depart.y < 0) ||
+             (game.plateau[pion.depart.x][pion.depart.y].couleur != tour)));
 
         do {
             printf("  > Séléction du pion en x : %d et y : %d\n"
@@ -43,23 +44,31 @@ int main(void) {
                     continue;
                 }
             }
-        } while (((pion.depart.x >= TAILLE || pion.depart.x < 0 ||
-                   pion.depart.y >= TAILLE || pion.depart.y < 0) ||
-                  (jeu.plateau[pion.depart.x][pion.depart.y].couleur != tour) ||
-                  (abs(pion.depart.x - pion.arrivee.x) > 1) ||
-                  abs(pion.depart.y - pion.arrivee.y) > 1));
+        } while (
+            ((pion.depart.x >= TAILLE || pion.depart.x < 0 ||
+              pion.depart.y >= TAILLE || pion.depart.y < 0) ||
+             (game.plateau[pion.depart.x][pion.depart.y].couleur != tour) ||
+             (abs(pion.depart.x - pion.arrivee.x) > 1) ||
+             abs(pion.depart.y - pion.arrivee.y) > 1));
 
-        if ((jeu.plateau[pion.arrivee.x][pion.arrivee.y].couleur == VIDE)) {
-            shift(&jeu, pion);
+        if ((game.plateau[pion.arrivee.x][pion.arrivee.y].couleur == VIDE)) {
+            shift(&game, pion);
         } else {
-            if (examine(&jeu, pion)) {
+            if ((examine(&game, pion)) &&
+                game.plateau[pion.depart.x][pion.depart.y].couleur != tour) {
                 gagnant(tour);
                 partie = 0;
+            } else if (game.plateau[pion.depart.x][pion.depart.y].couleur !=
+                       tour) {
+                game.plateau[pion.depart.x][pion.depart.y].couleur = VIDE;
             } else {
-                jeu.plateau[pion.depart.x][pion.depart.y].couleur = VIDE;
+                printf("Vous ne pouvez pas vérifier le type de votre propre "
+                       "pion\n");
+                show_tab(TAILLE, &game);
+                continue;
             }
         }
-        show_tab(TAILLE, &jeu);
+        show_tab(TAILLE, &game);
         if ((tour == NOIR) & (pion.arrivee.x == TAILLE - 1) &
             (pion.arrivee.y == 0)) {
             gagnant(NOIR);

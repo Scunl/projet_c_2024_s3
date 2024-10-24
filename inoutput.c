@@ -1,9 +1,8 @@
 #include "incognito.h"
 #include <stdio.h>
-
 #include <stdio.h>
 
-void show_tab(int tplateau, const Jeu *jeu) {
+void show_tab(int tplateau, const Jeu *game) {
     printf("   ");
     for (int j = 0; j < tplateau; j++) {
         printf("  %d ", j);
@@ -21,9 +20,9 @@ void show_tab(int tplateau, const Jeu *jeu) {
 
         for (int j = 0; j < tplateau; j++) {
             printf("| ");
-            if (jeu->plateau[i][j].couleur == NOIR) {
+            if (game->plateau[i][j].couleur == NOIR) {
                 printf("n");
-            } else if (jeu->plateau[i][j].couleur == BLANC) {
+            } else if (game->plateau[i][j].couleur == BLANC) {
                 printf("b");
             } else {
                 printf(" ");

@@ -26,12 +26,11 @@ typedef struct _mouvement {
 } Mouvement;
 
 int nb_pion(int tplateau);
-void init_plateau(int tplateau, Jeu *jeu);
-void show_tab(int tplateau, const Jeu *jeu);
+void init_plateau(int tplateau, Jeu *game);
+void show_tab(int tplateau, const Jeu *game);    
 Case parse(void);
-void shift(Jeu *jeu, Mouvement choix);
-int examine(Jeu *jeu, Mouvement pion);
+void shift(Jeu *game, Mouvement choix);
+int examine(Jeu *game, Mouvement pion);
 void gagnant(Couleur color);
-// void select_spy(int nbpion, Jeu *jeu);
 
 #endif
