@@ -22,8 +22,8 @@ int main(void) {
                 "déplacer\n  > ");
             pion.depart = parse();
             if (pion.depart.x == -1 || pion.depart.y == -1) {
-                while (getchar() != '\n')
-                    ;
+                while (getchar() != '\n') {
+                }
                 printf("Coordonnées invalides, veuillez réessayer.\n");
                 continue;
             }
