@@ -32,5 +32,5 @@ Case parse(void);
 void shift(Jeu *game, Mouvement choix);
 int examine(Jeu *game, Mouvement pion);
 void gagnant(Couleur color);
-
+Couleur gen_tour();
 #endif

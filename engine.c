@@ -70,9 +70,17 @@ void shift(Jeu *game, Mouvement choix) {
     game->plateau[choix.arrivee.x][choix.arrivee.y].couleur = tmp;
 }
 
-
 int examine(Jeu *game, Mouvement pion) {
     if (game->plateau[pion.arrivee.x][pion.arrivee.y].type == ESPION)
         return 1;
     return 0;
+}
+
+Couleur gen_tour() {
+    srand(time(NULL));
+    int nb_gen = rand() % 2;
+
+    if (nb_gen)
+        return BLANC;
+    return NOIR;
 }

@@ -7,7 +7,7 @@ int main(void) {
     Mouvement pion;
     init_plateau(TAILLE, &game);
     show_tab(TAILLE, &game);
-    Couleur tour = BLANC;
+    Couleur tour = gen_tour();
     int partie = 1;
 
     while (partie) {
