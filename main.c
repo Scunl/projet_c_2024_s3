@@ -55,10 +55,10 @@ int main(void) {
             shift(&game, pion);
         } else {
             if ((examine(&game, pion)) &&
-                game.plateau[pion.depart.x][pion.depart.y].couleur != tour) {
+                game.plateau[pion.arrivee.x][pion.arrivee.y].couleur != tour) {
                 gagnant(tour);
                 partie = 0;
-            } else if (game.plateau[pion.depart.x][pion.depart.y].couleur !=
+            } else if (game.plateau[pion.arrivee.x][pion.arrivee.y].couleur !=
                        tour) {
                 game.plateau[pion.depart.x][pion.depart.y].couleur = VIDE;
             } else {
@@ -79,7 +79,6 @@ int main(void) {
             gagnant(BLANC);
             partie = 0;
         }
-
         tour = (tour == NOIR) ? BLANC : NOIR;
     }
     return 0;
