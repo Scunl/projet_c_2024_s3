@@ -1,6 +1,8 @@
 #ifndef __INCOGNITO_H__
 #define __INCOGNITO_H__
 
+#include <stdio.h>
+
 #define TAILLE 5
 
 typedef enum _couleur { VIDE, BLANC, NOIR } Couleur;
@@ -27,11 +29,14 @@ typedef struct _mouvement {
 
 int nb_pion(int tplateau);
 void init_plateau(int tplateau, Jeu *game);
-void show_tab(int tplateau, const Jeu *game);    
+void show_tab(int tplateau, const Jeu *game);
 Case parse(void);
 void shift(Jeu *game, Mouvement choix);
 int examine(Jeu *game, Mouvement pion);
 void gagnant(Couleur color);
 Couleur gen_tour();
-
+void save_game(FILE *fichier, Mouvement coup, Couleur tour, int nb_coups);
+void sauvegarde_deroule(FILE *fichier, const Jeu *game, Couleur tour_initial,
+                        Couleur gagnant, const Mouvement *coups, int nb_coups);
+                        
 #endif

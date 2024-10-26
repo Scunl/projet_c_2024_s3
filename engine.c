@@ -33,7 +33,8 @@ void init_plateau(int tplateau, Jeu *game) {
                         spyn += rand() % 2;
                         if (spyn >= 1) {
                             game->plateau[i][j].type = ESPION;
-                            printf("spyn : %d %d\n", i, j);
+                            printf("BLACK SPY[%d][%d] = %d (1) ", i, j,
+                                   game->plateau[i][j].type);
                         }
                     }
                 } else {
@@ -47,8 +48,9 @@ void init_plateau(int tplateau, Jeu *game) {
                     if (spyb < 1) {
                         spyb += rand() % 2;
                         if (spyb >= 1) {
-                            printf("spyb : %d %d\n", i, j);
                             game->plateau[i][j].type = ESPION;
+                            printf("SPY[%d][%d] = %d (1)\n", i, j,
+                                   game->plateau[i][j].type);
                         }
                     }
                 } else
@@ -61,17 +63,25 @@ void init_plateau(int tplateau, Jeu *game) {
 }
 
 void shift(Jeu *game, Mouvement choix) {
-    Couleur tmp;
-    tmp = game->plateau[choix.depart.x][choix.depart.y].couleur;
+    Couleur colormove;
+    Type typemove;
+    colormove = game->plateau[choix.depart.x][choix.depart.y].couleur;
 
     game->plateau[choix.depart.x][choix.depart.y].couleur =
         game->plateau[choix.arrivee.x][choix.arrivee.y].couleur;
 
-    game->plateau[choix.arrivee.x][choix.arrivee.y].couleur = tmp;
+    game->plateau[choix.arrivee.x][choix.arrivee.y].couleur = colormove;
+
+    typemove = game->plateau[choix.depart.x][choix.depart.y].type;
+
+    game->plateau[choix.depart.x][choix.depart.y].type =
+        game->plateau[choix.arrivee.x][choix.arrivee.y].type;
+
+    game->plateau[choix.arrivee.x][choix.arrivee.y].type = typemove;
 }
 
 int examine(Jeu *game, Mouvement pion) {
-    if (game->plateau[pion.arrivee.x][pion.arrivee.y].type == ESPION)
+    if (game->plateau[pion.arrivee.x][pion.arrivee.y].couleur != VIDE)
         return 1;
     return 0;
 }
