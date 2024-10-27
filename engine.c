@@ -2,14 +2,33 @@
 #include <stdlib.h>
 #include <time.h>
 
-// Calcul le nombre de pion qu'il y'a pour une équipe sur le plateau
+// calcule les pions qui peuvent etre placés sur le plateau 
+// en fonction de la taille en calculant le nombre de pions en fonction de la taille 
+// du plateau 
+
+// Arguments:
+// int_plateau: taille du plateau 
+
+// valeur de retour:
+// tplateau: le nombre de pions calculés 
+
+// Exemple:
+// int pions = nb_pion(8); 
+// >>> 21
 int nb_pion(int tplateau) {
     if (tplateau <= 8)
         return ((tplateau - 1) * (tplateau - 2) / 2) - 1;
     return -1;
 }
 
-/*Retourne les coordonnées des espions et initialise le plateau*/
+// Crée un plateau avec des pions blancs et noirs
+
+// Arguments:
+// int tplateau: taille du plateau
+// jeu *game: pointeur vers la structure jeu
+
+// Valeur de retour:
+// pointeur vers case avec les coordonnées des espions 
 Case *init_plateau(int tplateau, Jeu *game) {
     int tmp = 2;
     int tmp2 = -2;
@@ -73,7 +92,9 @@ Case *init_plateau(int tplateau, Jeu *game) {
 
 // Fonction de déplacement qui prend en parametre le jeu et le mouvement de l'utilisateur
 // Il n'y a pas de valeur de retour 
-// C'est une fonction à effet de bord puisqu'elle modifie l'état du jeu par adresse
+// Arguments:
+// jeu *game: pointeur vers jeu
+// mouvement choix: structure qui a les coordonnées de départ et d'arrivée
 void shift(Jeu *game, Mouvement choix) {
     Couleur colormove;
     Type typemove;
@@ -94,14 +115,26 @@ void shift(Jeu *game, Mouvement choix) {
 }
 
 
-// Fonction qui renvoie 1 si la case cible n'est pas vide
+// Vérifie si la case d'arrivée est occupée
+
+// Arguments: 
+// Mouvement pion: les coordonnées de la case d'arrivé à verifier
+
+// valeur de retour:
+// 1 si la case est occupée, 0 sinon
 int examine(Jeu *game, Mouvement pion) {
     if (game->plateau[pion.arrivee.x][pion.arrivee.y].couleur != VIDE)
         return 1;
     return 0;
 }
 
-// Fonction qui renvoie un type couleur et qui premet de choisir un joueur qui commence la partie
+// Génère aléatoirement une couleur de tour du joueur (soit noir soit blanc)
+
+// Valeur de retour: Couleur générée (type couleur)
+
+// effet de bord: 
+// utilise rand() pour generer un nombre aléatoire 
+// basé sur l'heure actuelle, influençant les tours futurs
 Couleur gen_tour() {
     srand(time(NULL));
     int nb_gen = rand() % 2;

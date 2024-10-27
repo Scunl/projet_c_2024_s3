@@ -3,6 +3,32 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+/*la fonction principale du jeu 
+
+initialise la partie, gère les options en ligne de commande et le déroulement de la partie 
+
+Arguments:
+argc: nombre d'arguments en ligne de commande
+argv: tableau d'arguments en ligne de commande 
+
+Commandes:
+"-a": Affiche le jeu en mode ASCII
+"-g": Indique que le mode graphique est indisponible, ansi l'affichage ASCII est utilisé par defaut
+"-s [fichier]": Active la sauvegrade des mouvements dans un fichier 
+"-t": Active le mode triche pour révéler les espions adverses en majuscules 
+"-c [fichier]": charge une partie sauvegardée à partir d'un fichier 
+
+Fonctionnalitées principales: 
+Gestion du tour
+Déplacmements des pions 
+Règles de mouvement
+Examine des pions ennemis
+Déclaration de la victoire
+
+valeurs de retour:
+renvoie 0 si le jeu se termine correctement, 1 si y'a une erreur 
+*/
 int main(int argc, char const *argv[]) {
     Jeu game;
     Mouvement pion;
