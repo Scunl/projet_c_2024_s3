@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+// Calcul le nombre de pion qu'il y'a pour une équipe sur le plateau
 int nb_pion(int tplateau) {
     if (tplateau <= 8)
         return ((tplateau - 1) * (tplateau - 2) / 2) - 1;
@@ -70,6 +71,9 @@ Case *init_plateau(int tplateau, Jeu *game) {
     return tab;
 }
 
+// Fonction de déplacement qui prend en parametre le jeu et le mouvement de l'utilisateur
+// Il n'y a pas de valeur de retour 
+// C'est une fonction à effet de bord puisqu'elle modifie l'état du jeu par adresse
 void shift(Jeu *game, Mouvement choix) {
     Couleur colormove;
     Type typemove;
@@ -89,12 +93,15 @@ void shift(Jeu *game, Mouvement choix) {
     game->plateau[choix.arrivee.x][choix.arrivee.y].type = typemove;
 }
 
+
+// Fonction qui renvoie 1 si la case cible n'est pas vide
 int examine(Jeu *game, Mouvement pion) {
     if (game->plateau[pion.arrivee.x][pion.arrivee.y].couleur != VIDE)
         return 1;
     return 0;
 }
 
+// Fonction qui renvoie un type couleur et qui premet de choisir un joueur qui commence la partie
 Couleur gen_tour() {
     srand(time(NULL));
     int nb_gen = rand() % 2;
