@@ -1,5 +1,4 @@
 #include "incognito.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -9,11 +8,16 @@ int nb_pion(int tplateau) {
     return -1;
 }
 
-void init_plateau(int tplateau, Jeu *game) {
+/*Retourne les coordonnées des espions et initialise le plateau*/
+Case *init_plateau(int tplateau, Jeu *game) {
     int tmp = 2;
     int tmp2 = -2;
     int spyn = 0, spyb = 0;
-
+    Case *tab = malloc(2 * sizeof(Case));
+    if (tab == NULL) {
+        fprintf(stderr, "Erreur d'allocation mémoire pour les espions\n");
+        exit(EXIT_FAILURE);
+    }
     srand(time(NULL));
 
     for (int i = 0; i < tplateau; i++) {
@@ -33,12 +37,13 @@ void init_plateau(int tplateau, Jeu *game) {
                         spyn += rand() % 2;
                         if (spyn >= 1) {
                             game->plateau[i][j].type = ESPION;
-                            printf("BLACK SPY[%d][%d] = %d (1) ", i, j,
-                                   game->plateau[i][j].type);
+                            tab[0].x = i;
+                            tab[0].y = j;
                         }
                     }
                 } else {
-                    game->plateau[i][j].couleur = 8;
+                    game->plateau[i][j].type = CHATEAU;
+                    game->plateau[i][j].couleur = NOIR;
                 }
             }
             if (i >= 2 && j <= tmp2) {
@@ -48,23 +53,27 @@ void init_plateau(int tplateau, Jeu *game) {
                     if (spyb < 1) {
                         spyb += rand() % 2;
                         if (spyb >= 1) {
+                            tab[1].x = i;
+                            tab[1].y = j;
                             game->plateau[i][j].type = ESPION;
-                            printf("SPY[%d][%d] = %d (1)\n", i, j,
-                                   game->plateau[i][j].type);
                         }
                     }
-                } else
-                    game->plateau[i][j].couleur = 9;
+                } else {
+                    game->plateau[i][j].type = CHATEAU;
+                    game->plateau[i][j].couleur = NOIR;
+                }
             }
         }
         tmp++;
         tmp2++;
     }
+    return tab;
 }
 
 void shift(Jeu *game, Mouvement choix) {
     Couleur colormove;
     Type typemove;
+
     colormove = game->plateau[choix.depart.x][choix.depart.y].couleur;
 
     game->plateau[choix.depart.x][choix.depart.y].couleur =

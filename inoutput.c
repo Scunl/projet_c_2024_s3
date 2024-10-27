@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-void show_tab(int tplateau, const Jeu *game) {
+void show_tab_triche(int tplateau, Jeu *game) {
     printf("   ");
     for (int j = 0; j < tplateau; j++) {
         printf("  %d ", j);
@@ -31,7 +30,50 @@ void show_tab(int tplateau, const Jeu *game) {
             }
             printf(" ");
         }
-        
+
+        printf("|\n");
+
+        printf("   ");
+        for (int j = 0; j < tplateau; j++) {
+            printf("----");
+        }
+        printf("-\n");
+    }
+}
+
+void show_tab(int tplateau, Jeu *game) {
+    printf("   ");
+    for (int j = 0; j < tplateau; j++) {
+        printf("%c|%d  ", 'a' + j, j);
+    }
+    printf("\n");
+
+    printf("   ");
+    for (int i = 0; i < tplateau; i++) {
+        printf("----");
+    }
+    printf("-\n");
+
+    for (int i = 0; i < tplateau; i++) {
+        printf(" %d ", i);
+
+        for (int j = 0; j < tplateau; j++) {
+            printf("| ");
+            if (game->plateau[i][j].couleur == NOIR) {
+                if (game->plateau[i][j].type != CHATEAU)
+                    printf("n");
+                else
+                    printf(" ");
+            } else if (game->plateau[i][j].couleur == BLANC) {
+                if (game->plateau[i][j].type != CHATEAU)
+                    printf("b");
+                else
+                    printf(" ");
+            } else {
+                printf(" ");
+            }
+            printf(" ");
+        }
 
         printf("|\n");
 
@@ -76,46 +118,38 @@ void gagnant(Couleur color) {
         printf("Les noirs ont gagné la partie !\n");
 }
 
-// Convertit les coordonnées en notation d'échiquier
-void convertir_en_notation(Case pos, char *notation) {
+void convert(Case pos, char *notation) {
     notation[0] = 'a' + pos.y;
-    notation[1] = '1' + pos.x;
+    notation[1] = '1' + (TAILLE - pos.x - 1);
     notation[2] = '\0';
 }
 
-// Save le déroulé du jeu au format .inco
-void sauvegarde_deroule(FILE *fichier, const Jeu *game, Couleur tour_initial, Couleur gagnant, const Mouvement *coups, int nb_coups) {
+void sauvegarde_deroule(FILE *fichier, Couleur tour_initial, Mouvement *coups,
+                        int nb_coups, Case *espions) {
     char notation[3];
-
-    if (fichier == NULL) {
-        printf("Erreur: le fichier de sauvegarde n'est pas ouvert.\n");
-        return;
+    if (nb_coups == 0) {
+        fprintf(fichier, "Tour initial : %s",
+                (tour_initial == BLANC) ? "Blanc\n" : "Noir\n");
     }
 
-    for (int i = 0; i < TAILLE; i++) {
-        for (int j = 0; j < TAILLE; j++) {
-            if (game->plateau[i][j].type == ESPION) {
-                Case pos = {i, j};
-                convertir_en_notation(pos, notation);
+    // Écriture de la position initiale des espions
+    convert(espions[1], notation); // Espion blanc
+    fprintf(fichier, "B %s\n", notation);
 
-                if (game->plateau[i][j].couleur == BLANC) {
-                    fprintf(fichier, "B %s\n", notation);
-                } else if (game->plateau[i][j].couleur == NOIR) {
-                    fprintf(fichier, "N %s\n", notation);
-                }
-            }
-        }
-    }
+    convert(espions[0], notation); // Espion noir
+    fprintf(fichier, "N %s\n", notation);
 
-    fprintf(fichier, "%c\n", tour_initial == BLANC ? 'B' : 'N');
-
+    // Écriture des mouvements
     for (int i = 0; i < nb_coups; i++) {
-        convertir_en_notation(coups[i].depart, notation);
-        fprintf(fichier, "%c %s -> ", game->plateau[coups[i].depart.x][coups[i].depart.y].couleur == BLANC ? 'B' : 'N', notation);
+        char type_action = (coups[i].depart.x == coups[i].arrivee.x &&
+                            coups[i].depart.y == coups[i].arrivee.y)
+                               ? 'I'
+                               : 'D';
 
-        convertir_en_notation(coups[i].arrivee, notation);
+        convert(coups[i].depart, notation); // Notation de départ
+        fprintf(fichier, "%c %s->", type_action, notation);
+
+        convert(coups[i].arrivee, notation); // Notation d'arrivée
         fprintf(fichier, "%s\n", notation);
     }
-
-    fprintf(fichier, "%c\n", gagnant == BLANC ? 'B' : 'N');
 }
