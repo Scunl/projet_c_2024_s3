@@ -7,6 +7,7 @@ int main(int argc, char const *argv[]) {
     Jeu game;
     Mouvement pion;
     Case *espion = init_plateau(TAILLE, &game);
+    printf("%d %d %d %d\n", espion[0].x, espion[0].y, espion[1].x, espion[1].y);
     Couleur tour_initial = gen_tour();
     Couleur tour = tour_initial;
     int partie = 1;
@@ -46,10 +47,8 @@ int main(int argc, char const *argv[]) {
             }
         }
     }
-    if (!triche) {
-        show_tab(TAILLE, &game);
-    } else
-        show_tab_triche(TAILLE, &game);
+
+    show_tab(TAILLE, &game, triche);
     while (partie) {
         do {
             printf("=======Appuyez sur n'importe quelle touche pour "
@@ -85,10 +84,7 @@ int main(int argc, char const *argv[]) {
             printf("  > Séléction du pion en x : %d et y : %d\n", pion.depart.x,
                    pion.depart.y);
 
-            if (!triche)
-                show_tab(TAILLE, &game);
-            else
-                show_tab_triche(TAILLE, &game);
+            show_tab(TAILLE, &game, triche);
             printf("    >   Vers quelle case voulez-vous effectuer votre coup "
                    "?\n    > ");
             pion.arrivee = parse();
@@ -109,8 +105,13 @@ int main(int argc, char const *argv[]) {
             (tour == NOIR && pion.arrivee.x == 0 &&
              pion.arrivee.y == TAILLE - 1));
 
-        if (game.plateau[pion.depart.x][pion.depart.y].type == ESPION) {
+        // if (nb_coups < MAX_COUPS) {
+        //     coups[nb_coups++] = pion; Chargement
+        // }
+        if (save) {
+            sauvegarde_deroule(saved_file, pion, nb_coups, tour, espion);
         }
+        nb_coups++;
 
         if ((game.plateau[pion.arrivee.x][pion.arrivee.y].couleur == VIDE)) {
             shift(&game, pion);
@@ -135,15 +136,14 @@ int main(int argc, char const *argv[]) {
                     printf("Ils ont découvert l'esion adverse !\n");
                     partie = 0;
                 } else {
+                    if (game.plateau[pion.arrivee.x][pion.arrivee.y].couleur ==
+                        tour)
+                        continue;
                     game.plateau[pion.depart.x][pion.depart.y].couleur = VIDE;
                     printf("Et en plus, votre chevalier s'est fait "
                            "empoisonné...\n");
                 }
-                if (!triche)
-                    show_tab(TAILLE, &game);
-                else
-                    show_tab_triche(TAILLE, &game);
-                continue;
+                show_tab(TAILLE, &game, triche);
             }
         } else {
             if (game.plateau[pion.depart.x][pion.depart.y].couleur !=
@@ -153,10 +153,8 @@ int main(int argc, char const *argv[]) {
                 "Les %s ont gagné la partie après avoir atteint le chateau !\n",
                 (tour == BLANC ? "blancs" : "noirs"));
         }
-        if (!triche)
-            show_tab(TAILLE, &game);
-        else
-            show_tab_triche(TAILLE, &game);
+        show_tab(TAILLE, &game, triche);
+
         if ((tour == NOIR) & (pion.arrivee.x == TAILLE - 1) &
             (pion.arrivee.y == 0)) {
             gagnant(NOIR);
@@ -167,11 +165,9 @@ int main(int argc, char const *argv[]) {
             gagnant(BLANC);
             partie = 0;
         }
+
         tour = (tour == NOIR) ? BLANC : NOIR;
     }
-    if (save) {
-        sauvegarde_deroule(saved_file, tour_initial, &pion, nb_coups, espion);
-        fclose(saved_file);
-    }
+
     return 0;
 }

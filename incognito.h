@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #define TAILLE 5
+#define MAX_COUPS 100
 
 typedef enum _couleur { VIDE, BLANC, NOIR } Couleur;
 typedef enum _type { CHEVALIER, ESPION, CHATEAU } Type;
@@ -29,16 +30,16 @@ typedef struct _mouvement {
 
 int nb_pion(int tplateau);
 Case *init_plateau(int tplateau, Jeu *game);
-void show_tab(int tplateau, Jeu *game);
+void show_tab(int tplateau, Jeu *game, int triche);
 Case parse(void);
 void shift(Jeu *game, Mouvement choix);
 int examine(Jeu *game, Mouvement pion);
 void gagnant(Couleur color);
 Couleur gen_tour();
 void save_game(FILE *fichier, Mouvement coup, Couleur tour, int nb_coups);
-void sauvegarde_deroule(FILE *fichier, Couleur tour_initial,
-                        Mouvement *coups, int nb_coups, Case *espions);
-void show_tab_triche(int tplateau, Jeu *game);
+void sauvegarde_deroule(FILE *fichier, Mouvement pion, int nbcoups,
+                        Couleur tour, Case *espion);
 void convert(Case pos, char *notation);
+void convert_inverse(char *notation, Case *position);
 
 #endif

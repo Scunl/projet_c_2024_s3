@@ -4,7 +4,10 @@ OBJ = engine.o inoutput.o main.o
 DEPS = incognito.h
 
 main: $(OBJ)
-	$(CC) -o $@ $^
+	$(CC) -o $@ $^ $(CFLAGS)
+
+run: main
+	./main
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
